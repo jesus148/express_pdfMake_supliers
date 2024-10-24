@@ -1,0 +1,25 @@
+{
+  "name": "pdf_back",
+  "version": "1.0.0",
+  "description": "pdf back",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "tsc": "tsc --watch",
+    "start:dev:local": "nodemon ./dist/app.js"
+  },
+  "author": "jesusha",
+  "license": "ISC",
+  "dependencies": {
+    "@types/pdfmake": "^0.2.9",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7",
+    "pdfmake": "^0.2.14"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0"
+  }
+}
