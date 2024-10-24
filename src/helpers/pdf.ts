@@ -1,6 +1,6 @@
 import PdfPrinter from 'pdfmake';
 import { docDefinition } from '../doct';
-import { Roboto } from '../fonts';
+import { Roboto , fontsFamily} from '../fonts';
 
 export const createPdf = async (): Promise<Buffer> => {
   const printer = new PdfPrinter({ Roboto });

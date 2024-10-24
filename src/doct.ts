@@ -177,21 +177,108 @@ export const docDefinition: TDocumentDefinitions = {
 
 
               }
+        ],
 
 
-              
-        ]
-    }
+    },
+    {
+      table: {
+      // widths: ['*', 'auto', 100, '*'],
+				headerRows: 1,
+      
+				body: [
+          [
+            { text: 'COMPROBANTES QUE DAN ORIGEN A LA RETENCIÓN' , colSpan:7 , style: "tableHeader"}, 
+            {},
+            {},
+            {},
+            {}, 
+            {},
+            {},
+            { text: 'TIPO DE CAMBIO' , rowSpan:2}, 
+            { text: 'TOTAL A AFECTO A RETENCIÓN $/', rowSpan:2 }, 
+            { text: 'TOTAL RETENCIÓN $/', rowSpan:2 }
+          ],
+					[
+            "TIPO",
+            "NÚMERO DE DOC.",
+            "FECHA",
+            "IMPORTE ORIGINAL",
+            "FECHA PAGO",
+            "NRO DE PAGO",
+            "IMPORTE PAGO",
+            "",
+            "",
+            ""
+					],
+					["data 1", "data 2", "data 3", "data 4", "data", "A", "B", "data", "A", "B" ],
+          
+					[{text:"Observaciones: -", colSpan:"8"} ,{},{},{},{},{},{},{}, {text:"PEN 14,714.23"} ,{text:"PEN 455.08"}]
+				]
+			},
+      layout:{
+                            hLineWidth: function () { return 1; }, // Grosor del borde horizontal
+                            vLineWidth: function () { return 1; }, // Grosor del borde vertical
+                            hLineColor: function () { return '#000000'; }, // Color del borde horizontal
+                            vLineColor: function () { return '#000000'; }, // Color del borde vertical
+                            paddingLeft: function () { return 1; }, // Padding izquierdo
+                            paddingRight: function () { return 1; }, // Padding derecho
+                            paddingTop: function () { return 1; }, // Padding superior
+                            paddingBottom: function () { return 1; }, // Padding inferior
+                            fillColor: function () { return null; },// Sin color de fondo
+                            // lineJoin: 'round', // Bordes redondeados
+                            // hLineWidth: function (i, node) {
+                            //   console.log(i, node);
+                            //   return (i === 1 ) ? 1 : 0;
+                            // },
+                            // vLineWidth: function (i, node) {
+                            //   return 0;
+                            // }                                         
+      },
+      margin: [0, 22, 0, 0]  ,
+    },
+    {
+      columns:[
+        {
+          width:'40%',
+          stack:[
+            {
+              text:''
+            }
+          ]
+        },
+        {
+          width:'20%',
+          stack:[
+            {
+              text:''
+            }
+          ]
+        },
+        {
+          width:'40%',
+          stack:[
+            {
+              text:'Representación impresa del comprobante de retención electrónico',
+              style:'estilos1'
+            },
+            {
+              text:'Este documento está a disposición del adquiriente o usuario en el correo electrónico que haya designado previamente',
+              style:'estilos2'
+            },
+          ]
+        }
+      ]
+    },
   ],
-
-
 
   
   styles: {
-    header: {
-      fontSize: 118,
+    tableHeader: {
+      fontSize:10,
       bold: true,
-      margin: [0, 0, 0, 10],
+      alignment:"center",
+      
     },
     subheader: {
       fontSize: 16,
@@ -200,6 +287,19 @@ export const docDefinition: TDocumentDefinitions = {
     },
     tableExample: {
       margin: [0, 5, 0, 15],
+      
     },
+    estilos2:{
+      marginTop:12,
+      fontSize:10,
+      bold:true
+      // font:''
+    },
+    estilos1:{
+      marginTop:12,
+      fontSize:10,
+      bold:true
+      // font:'bolditalics'
+    }
   },
 };
