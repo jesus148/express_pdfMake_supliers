@@ -68,25 +68,24 @@ export const docDefinition: TDocumentDefinitions = {
 
                   columns:[
                     {
-
                       stack:[
                         {
                           canvas: [
                             {
                               type: 'rect',
-                              x: 0,
+                              x: 50,
                               y: 0,
-                              w: 250,    // Ajusta el ancho del rectángulo según tu tabla
-                              h: 130,    // Ajusta el alto del rectángulo
-                              r: 10,     // Radio para redondear las esquinas
-                              lineWidth: 3,
-                              lineColor: '#0000ff' // Color del borde
+                              w: 250,
+                              h: 90,
+                              r: 10, 
+                              lineColor: '#0000ff',
+                              lineWidth:3,
+                            
                             }
                           ],
-                          margin: [0, 0, 0, -120]  // Ajusta el margen para superponer la tabla correctamente
+                          margin: [0, 0, 0, 0]  
                         },
                         {
-                          
                           table:{
                             widths:['*'],
                             
@@ -98,29 +97,33 @@ export const docDefinition: TDocumentDefinitions = {
                                       text: 'R.U.C.: 20100006538',
                                       alignment: 'center',
                                       bold: true,
-                                      fontSize: 12,
-                                      color: '#0000ff', // Azul
+                                      fontSize: 16,
+                                      color: '#0000ff',
+                                      marginTop:2
                                     },
                                     {
                                       text: 'Comprobante de Retención',
                                       alignment: 'center',
                                       bold: true,
-                                      fontSize: 12,
-                                      color: '#0000ff', // Azul
+                                      fontSize: 16,
+                                      color: '#0000ff',
+                                      marginTop:2
                                     },
                                     {
                                       text: 'Electrónico',
                                       alignment: 'center',
                                       bold: true,
-                                      fontSize: 12,
-                                      color: '#0000ff', // Azul
+                                      fontSize: 16,
+                                      color: '#0000ff',
+                                      marginTop:2
                                     },
                                     {
                                       text: 'R001-6819',
                                       alignment: 'center',
                                       bold: true,
-                                      fontSize: 12,
-                                      color: '#0000ff', // Azul
+                                      fontSize: 16,
+                                      color: '#0000ff',
+                                      marginTop:2
                                     }
                                   ]
                                 }
@@ -129,30 +132,46 @@ export const docDefinition: TDocumentDefinitions = {
                           },
                           // estilos tabla
                           layout:{
-                           
-                            hLineWidth: function () { return 3; }, // Grosor del borde horizontal
-                            vLineWidth: function () { return 3; }, // Grosor del borde vertical
-                            hLineColor: function () { return '#0000ff'; }, // Color del borde horizontal
-                            vLineColor: function () { return '#0000ff'; }, // Color del borde vertical
-                            paddingLeft: function () { return 10; }, // Padding izquierdo
-                            paddingRight: function () { return 10; }, // Padding derecho
-                            paddingTop: function () { return 10; }, // Padding superior
-                            paddingBottom: function () { return 10; }, // Padding inferior
-                            fillColor: function () { return null; } // Sin color de fondo
-                            // lineJoin: 'round', // Bordes redondeados
+                           defaultBorder:false
+                          //   hLineWidth: function () { return 3; }, // Grosor del borde horizontal
+                          //   vLineWidth: function () { return 3; }, // Grosor del borde vertical
+                          //   hLineColor: function () { return '#0000ff'; }, // Color del borde horizontal
+                          //   vLineColor: function () { return '#0000ff'; }, // Color del borde vertical
+                          //   paddingLeft: function () { return 10; }, // Padding izquierdo
+                          //   paddingRight: function () { return 10; }, // Padding derecho
+                          //   paddingTop: function () { return 10; }, // Padding superior
+                          //   paddingBottom: function () { return 10; }, // Padding inferior
+                          //   fillColor: function () { return null; } // Sin color de fondo
+                          //   // lineJoin: 'round', // Bordes redondeados
                             
                       
-                          }
+                          },
+                          margin: [50, -90, 0, 0]  
                         }
                       ]
-                      
-
                     }
                   ]
                   
                 },
                 {
-                  text:'jesus'
+                  text:'Fecha de emisión  :  2024-10-02',
+                  fontSize:10,
+                  marginTop:7,
+                  marginLeft:110,
+                  bold:true
+                  // style:'subheader'
+                },
+                {
+                  text:'Código de regimen  :  Tasa 3%',
+                  fontSize:10,
+                  marginTop:3,
+                  marginLeft:110,
+                },
+                {
+                  text:'Tasa de retención (%)  :  3.00',
+                  fontSize:10,
+                  marginTop:3,
+                  marginLeft:110,
                 }
                 ]
 
@@ -170,7 +189,7 @@ export const docDefinition: TDocumentDefinitions = {
   
   styles: {
     header: {
-      fontSize: 18,
+      fontSize: 118,
       bold: true,
       margin: [0, 0, 0, 10],
     },
