@@ -15,8 +15,10 @@ class Server{
         this.port = process.env.PORT || '3001';
 
         this.listen();
+        this.midlewares();
 
         this.router();
+
     }
 
     listen(){
@@ -24,12 +26,21 @@ class Server{
     } 
     
     router(){
-        this.app.get('/', async function (req: Request, res: Response) {
+      // http://localhost:3000/pdf/jesus/jesus
+        this.app.get('/pdf/:cardCode/:withholdingNumnber', async function (req: Request, res: Response) {
             try {
-              const binaryResult = await createPdf();
+
+              const cardCode = req.params.cardCode;
+              const withholdingNumnber = req.params.withholdingNumnber;
+
+              
+              const binaryResult = await createPdf(cardCode, withholdingNumnber);
               // const html = '<h1>Hola</h1>';
+              // nombre pdf
               res.setHeader('Content-disposition', 'attachment; filename=report.pdf');
+              // envio al front
               res.type('pdf').send(binaryResult);
+            // error
             } catch (err: any) {
               console.log(err);
               res.send(errorPdfHtmlTemplate(err.message));
@@ -37,6 +48,7 @@ class Server{
             // pdfDoc.pipe(fs.createWriteStream('pdfs/tables.pdf'));
             // pdfDoc.end();
           });
+
     }
 
     midlewares(){
