@@ -14,6 +14,33 @@ export const docDefinitionRest = async (cardCode:any ,withholdingNumnber :any):P
      console.log(data);
 
      let rowForTable: any = [
+      // [
+      //   { text: 'COMPROBANTES QUE DAN ORIGEN A LA RETENCIÓN' , colSpan:7 , style: "tableHeader"}, 
+      //   {},
+      //   {},
+      //   {},
+      //   {}, 
+      //   {},
+      //   {},
+      //   { text: 'TIPO DE CAMBIO' , rowSpan:2 , style: "tableHeader"}, 
+      //   { text: 'TOTAL A AFECTO A RETENCIÓN $/', rowSpan:2 , style: "tableHeader" }, 
+      //   { text: 'TOTAL RETENCIÓN $/', rowSpan:2 , style: "tableHeader"}
+      // ],[
+      //   { text:"TIPO", style: "tableHeader"},
+      //   {text:"NÚMERO DE DOC.", style: "tableHeader"},
+      //   { text:"FECHA", style: "tableHeader"},
+      //   { text:"IMPORTE ORIGINAL", style: "tableHeader"},
+      //   { text:"FECHA PAGO",style: "tableHeader" },
+      //   {text:"NRO DE PAGO", style: "tableHeader"},
+      //   { text:"IMPORTE PAGO",style: "tableHeader"} ,
+      //   {text:"",style: "tableHeader"},
+      //   {text:"" , style: "tableHeader"},
+      //   {text:"", style: "tableHeader"}
+      // ]
+     ];
+
+
+     let tableRows: any = [
       [
         { text: 'COMPROBANTES QUE DAN ORIGEN A LA RETENCIÓN' , colSpan:7 , style: "tableHeader"}, 
         {},
@@ -25,29 +52,59 @@ export const docDefinitionRest = async (cardCode:any ,withholdingNumnber :any):P
         { text: 'TIPO DE CAMBIO' , rowSpan:2 , style: "tableHeader"}, 
         { text: 'TOTAL A AFECTO A RETENCIÓN $/', rowSpan:2 , style: "tableHeader" }, 
         { text: 'TOTAL RETENCIÓN $/', rowSpan:2 , style: "tableHeader"}
+      ],
+      [
+        { text:"TIPO", style: "tableHeader"},
+        {text:"NÚMERO DE DOC.", style: "tableHeader"},
+        { text:"FECHA", style: "tableHeader"},
+        { text:"IMPORTE ORIGINAL", style: "tableHeader"},
+        { text:"FECHA PAGO",style: "tableHeader"},
+        {text:"NRO DE PAGO", style: "tableHeader"},
+        { text:"IMPORTE PAGO",style: "tableHeader"} ,
+        {text:"",style: "tableHeader"},
+        {text:"" , style: "tableHeader"},
+        {text:"", style: "tableHeader"}
       ]
      ];
      data.rows.forEach((item:any) => {
-      let tempRow = [];
-       tempRow.push({ text: item.tipo, style: 'tableHeader'});
-       tempRow.push({ text: item.SERIE_CORRELATIVO, style: 'tableHeader'});
-       tempRow.push({ text: item.FEC_EMI_FACT.split(' ')[0], style: 'tableHeader'});
-       tempRow.push({ text: item.TOTAL_FACT, style: 'tableHeader'});
-       tempRow.push({ text: item.FECHA_RETENCION.split(' ')[0], style: 'tableHeader'});
-       tempRow.push({ text: item.MONEDA_PAGOs , style: 'tableHeader'});
-       tempRow.push({ text: item.TOTAL_PAGO, style: 'tableHeader'});
-       tempRow.push({ text: item.TC, style: 'tableHeader'});
-       tempRow.push({ text: item.RETENIDO, style: 'tableHeader'});
-       tempRow.push({ text: item.RETENIDO, style: 'tableHeader'});
-       rowForTable.push(tempRow);
+      
+       let tempRow: any = [];
+
+       tempRow.push({ text: item.TIPO, style: 'tablecontent'});
+       tempRow.push({ text: item.SERIE_CORRELATIVO, style: 'tablecontent'});
+       tempRow.push({ text: item.FEC_EMI_FACT.split(' ')[0], style: 'tablecontent'});
+       tempRow.push({ text: `USD ${Number(item.TOTAL_FACT)}`, style: 'tablecontent'});
+       tempRow.push({ text: item.FECHA_RETENCION.split(' ')[0], style: 'tablecontent'});
+       tempRow.push({ text: Number(item.TIPO) , style: 'tablecontent'});
+       tempRow.push({ text:  `USD ${Number(item.TOTAL_FACT)}` , style: 'tablecontent'});
+       tempRow.push({ text: Number(item.TC).toFixed(5), style: 'tablecontent'});
+       tempRow.push({ text:`PEN ${Number(item.TOTAL_PAGO).toLocaleString('en-US')}` , style: 'tablecontent'});
+       tempRow.push({ text: `PEN ${Number(item.RETENIDO).toLocaleString('en-US')}` , style: 'tablecontent'});
+       tableRows.push(tempRow);
+     });
+
+     let totalAfecto:number=0;
+     data.rows.forEach((item:any)=>{
+      totalAfecto+=Number(item.TOTAL_PAGO);
      })
 
-    console.log(rowForTable);
+     let totalRetencion:number=0;
+     data.rows.forEach((item:any)=>{
+      totalRetencion+=Number(item.RETENIDO);
+     })
+
+
+
+     tableRows.push( 
+      [{text:"Observaciones: -", colSpan:"8" , style:"tablefooterLeft" } ,{},{},{},{},{},{},{}, {text:`PEN ${Number(totalAfecto).toLocaleString('en-us')} `, style:"tablefooter"} ,{text:`PEN ${Number(totalRetencion).toLocaleString('en-us')} `, style:"tablefooter"}]);
+
+     console.log(rowForTable)
 
     const docDefinition: TDocumentDefinitions  = {
 
      pageSize:'A4',
      pageOrientation:'landscape',
+     pageMargins: [30, 30, 30, 120],
      content: [
        {
            columns:[
@@ -82,17 +139,17 @@ export const docDefinitionRest = async (cardCode:any ,withholdingNumnber :any):P
                        }
                        ,
                        {
-                           text:'Señor(es) :  LC INNOVACION TECNOLOGICA S.A.C.',
+                           text: 'Señor(es) : ' + data.rows[0].PROV_RZ,
                            fontSize:10,
                            marginTop:3
                        },
                        {
-                           text:'RUC  :  20600987481',
+                           text:`RUC : ${data.rows[0].PROV_RUC}`,
                            fontSize:10,
                            marginTop:3
                        },
                        {
-                           text:'DIRECCION  :  JR. CALLAO MZA. I LOTE. 1 URB. SANTA ROSA CALLAO PROV. DEL CALLAO',
+                           text:`DIRECCION : ${data.rows[0].PROV_DIR}`,
                            fontSize:10,
                            marginTop:3
                        }
@@ -135,10 +192,10 @@ export const docDefinitionRest = async (cardCode:any ,withholdingNumnber :any):P
                                
                                body:[
                                  [
-                                   {
+                                   {  
                                      stack:[
                                        {
-                                         text: 'R.U.C.: 20100006538',
+                                         text: 'R.U.C.: 20100006538 ',
                                          alignment: 'center',
                                          bold: true,  
                                          fontSize: 16,
@@ -162,7 +219,7 @@ export const docDefinitionRest = async (cardCode:any ,withholdingNumnber :any):P
                                          marginTop:2
                                        },
                                        {
-                                         text: 'R001-6819',
+                                         text: `${data.rows[0].SERIE_CORRELATIVO}`,
                                          alignment: 'center',
                                          bold: true,
                                          fontSize: 16,
@@ -195,10 +252,11 @@ export const docDefinitionRest = async (cardCode:any ,withholdingNumnber :any):P
                          ]
                        }
                      ]
-                     
+                      
                    },
                    {
-                     text:'Fecha de emisión  :  2024-10-02',
+                    //  text:'Fecha de emisión  :  2024-10-02',
+                     text:`Fecha de emisión: ${data.rows[0].FEC_EMI_FACT.split(' ')[0]}`,
                      fontSize:10,
                      marginTop:7,
                      marginLeft:110,
@@ -229,39 +287,17 @@ export const docDefinitionRest = async (cardCode:any ,withholdingNumnber :any):P
        },
        {
          table: {
-         // widths: ['*', 'auto', 100, '*'],
+        //  widths: ['*', 'auto', 100, '*'],
            headerRows: 1,
          
-           body: [
-             /* [
-               { text: 'COMPROBANTES QUE DAN ORIGEN A LA RETENCIÓN' , colSpan:7 , style: "tableHeader"}, 
-               {},
-               {},
-               {},
-               {}, 
-               {},
-               {},
-               { text: 'TIPO DE CAMBIO' , rowSpan:2 , style: "tableHeader"}, 
-               { text: 'TOTAL A AFECTO A RETENCIÓN $/', rowSpan:2 , style: "tableHeader" }, 
-               { text: 'TOTAL RETENCIÓN $/', rowSpan:2 , style: "tableHeader"}
-             ],
-             [
-               { text:"TIPO", style: "tableHeader"},
-               {text:"NÚMERO DE DOC.", style: "tableHeader"},
-               { text:"FECHA", style: "tableHeader"},
-               { text:"IMPORTE ORIGINAL", style: "tableHeader"},
-               { text:"FECHA PAGO",style: "tableHeader" },
-               {text:"NRO DE PAGO", style: "tableHeader"},
-               { text:"IMPORTE PAGO",style: "tableHeader"} ,
-               {text:"",style: "tableHeader"},
-               {text:"" , style: "tableHeader"},
-               {text:"", style: "tableHeader"}
-             ], */
-             rowForTable,
-             [{text:"data 1", style:"tablecontent" }, {text :"data 2" , style:"tablecontent"},{text:"data 3" , style:"tablecontent"  } , {text:"data 4" , style:"tablecontent"}, {text:"data" , style:"tablecontent"}, {text:"A" , style:"tablecontent"}, {text:"B", style:"tablecontent"}, {text:"data", style:"tablecontent"} , {text:"A", style:"tablecontent"}, {text: "B", style:"tablecontent"} ],
+           body:tableRows /* [
+              
              
-             [{text:"Observaciones: -", colSpan:"8" , style:"tablefooterLeft" } ,{},{},{},{},{},{},{}, {text:"PEN 14,714.23" , style:"tablefooter"} ,{text:"PEN 455.08", style:"tablefooter"}]
-           ]
+              [{text:"data 1", style:"tablecontent" }, {text :"data 2" , style:"tablecontent"},{text:"data 3" , style:"tablecontent"  } , {text:"data 4" , style:"tablecontent"}, {text:"data" , style:"tablecontent"}, {text:"A" , style:"tablecontent"}, {text:"B", style:"tablecontent"}, {text:"data", style:"tablecontent"} , {text:"A", style:"tablecontent"}, {text: "B", style:"tablecontent"} ],
+             
+            
+           ] */
+          
          },
          layout:{
                                hLineWidth: function () { return 1; }, // Grosor del borde horizontal
@@ -282,50 +318,64 @@ export const docDefinitionRest = async (cardCode:any ,withholdingNumnber :any):P
                                //   return 0;
                                // }                                         
          },
-         margin: [0, 22, 0, 0]  ,
+         margin: [6, 32, 0, 0]  ,
        },
-       {
-         columns:[
-           {
-             width:'40%',
-             stack:[
-               {
-                 text:''
-               }
-             ]
-           },
-           {
-             width:'20%',
-             stack:[
-               {
-                 text:''
-               }
-             ]
-           },
-           {
-             width:'40%',
-             stack:[
-               {
-                 text:'Representación impresa del comprobante de retención electrónico',
-                 style:'estilos1'
-               },
-               {
-                 text:'Este documento está a disposición del adquiriente o usuario en el correo electrónico que haya designado previamente',
-                 style:'estilos2'
-               },
-             ]
-           }
-         ]
-       },
-     ],
+     ], 
+     
+     footer:{
+      
+      columns:[
+        {
+          width:'40%',
+          stack:[
+            {
+              text:''
+            }
+          ]
+        },
+        {
+          width:'20%',
+          stack:[
+            {
+              text:''
+            }
+          ]
+        },
+        {
+          width:'35%',
+          alignment:'left',
+          stack:[
+            {
+              text:'Representación impresa del comprobante de retención electrónico',
+              style:'estilos1'
+            },
+            {
+              text:'Este documento está a disposición del adquiriente o usuario en el correo electrónico que haya designado previamente',
+              style:'estilos2'
+            },
+          ]
+        },{
+          width:'5%',
+          stack:[
+            {
+              text:''
+            }
+          ]
+        }
+      ]
+     },
    
      
+     
      styles: {
+    
+
        tableHeader: {
          fontSize:10,
          bold: true,
          alignment:"center",
          lineHeight:1,
+         
        },
        tablecontent: {
          fontSize:10,
@@ -337,7 +387,7 @@ export const docDefinitionRest = async (cardCode:any ,withholdingNumnber :any):P
        tablefooter: {
          fontSize:10,
          bold: true,
-         alignment:"center",
+         alignment:"right",
          lineHeight:1,
        },
        tablefooterLeft: {
@@ -348,17 +398,22 @@ export const docDefinitionRest = async (cardCode:any ,withholdingNumnber :any):P
        },
        // estilos footer pdf
        estilos2:{
-         marginTop:12,
+
          fontSize:10,
-         bold:true
+         bold:true,
+         marginTop:7
+
          // font:''
-       },
-       estilos1:{
-         marginTop:12,
-         fontSize:10,
-         bold:true
+        },
+        estilos1:{
+          
+          fontSize:10,
+          bold:true,
+          marginTop:7
          // font:'bolditalics'
        },
+
+      
    
      },
    };

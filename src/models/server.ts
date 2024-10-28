@@ -26,7 +26,7 @@ class Server{
     } 
     
     router(){
-      // http://localhost:3000/pdf/jesus/jesus
+      // http://localhost:3000/pdf/P20600987381/6819
         this.app.get('/pdf/:cardCode/:withholdingNumnber', async function (req: Request, res: Response) {
             try {
 
