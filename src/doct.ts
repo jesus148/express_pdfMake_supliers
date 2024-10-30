@@ -7,7 +7,7 @@ import { TDocumentDefinitions } from 'pdfmake/interfaces';
 export const docDefinitionRest = async (cardCode:any ,withholdingNumnber :any):Promise<TDocumentDefinitions>=>{
   
 
-    const apiUrl ="http://52.207.189.125:3000"
+    const apiUrl ="http://52.207.189.125:3000";
     data:[];
     const response = await fetch(`${apiUrl}/withholdings-with-filters?cardCode=${cardCode}&withholdingNumnber=${withholdingNumnber}`);
     const data = await response.json();
