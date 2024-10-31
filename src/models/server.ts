@@ -2,6 +2,7 @@
 
 import express , {Application , Request , Response} from 'express';
 import { createPdf, errorPdfHtmlTemplate } from '../helpers/pdf';
+import routerExcel from '../routes/excel.routes';
 
 class Server{
 
@@ -10,13 +11,16 @@ class Server{
     private port:string;
 
 
+    private routerExcel:string;
+
+
     constructor(){
         this.app = express();
         this.port = process.env.PORT || '3001';
 
+        this.routerExcel='/api/supliers';
         this.listen();
         this.midlewares();
-
         this.router();
 
     }
@@ -49,6 +53,8 @@ class Server{
             // pdfDoc.end();
           });
 
+
+          this.app.use(this.routerExcel,  routerExcel)
     }
 
     midlewares(){
