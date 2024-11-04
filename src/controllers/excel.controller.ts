@@ -5,6 +5,7 @@ import ExcelJS, { Workbook } from 'exceljs';
 import exceljs from 'exceljs'
 import fs from 'fs';
 import path from 'path';
+import moment from 'moment';
 
 
 
@@ -91,12 +92,9 @@ data.rows.forEach( (item:any)=>{
     saldo:item.Saldo_pendiente
   })
 
-  const montoCell = row.getCell('monto');
-  montoCell.numFmt = '#,##0.00';
+  row.getCell("vencimiento").value = moment().format("MM/DD/YYYY");
+  row.getCell("emision").value = moment().format("MM/DD/YYYY");
 
-
-
-  
 })
 
 
