@@ -1,7 +1,7 @@
 
 
 import { Router } from "express";
-import {  getAccountState , getdeductions, getPayedInvoices, getwithholdings } from "../controllers/excel.controller";
+import {  getAccountState , getBankAccount, getdeductions, getPayedInvoices, getwithholdings } from "../controllers/excel.controller";
 
 const router = Router();
 
@@ -34,7 +34,7 @@ router.get('/payed-invoices/:cardCode' , getPayedInvoices);
 
 
 // cuentas de banco
-// http://localhost:3000/api/supliers/withholdings/P20600987381
-router.get('/bank-account/:cardCode' , getwithholdings);
+// http://localhost:3000/api/supliers/bank-account/P20600987381
+router.get('/bank-account/:cardCode' , getBankAccount);
 
 export default router;

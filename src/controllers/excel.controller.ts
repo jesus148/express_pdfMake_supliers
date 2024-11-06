@@ -310,9 +310,8 @@ resp.end();
 
 
 
-
 // pagos efectuados
-// ttp://localhost:3000/api/supliers/payed-invoices/P20600987381
+// http://localhost:3000/api/supliers/payed-invoices/P20600987381
 export const getPayedInvoices= async( req:Request, resp:Response)=>{
   const cardCode = req.params.cardCode;
 
@@ -320,7 +319,8 @@ export const getPayedInvoices= async( req:Request, resp:Response)=>{
   const apiUrl='http://52.207.189.125:3000';
   const response = await fetch(`${apiUrl}/payed-invoices?cardCode=${cardCode}`);
   const data= await response.json();
-  console.log(data)
+  console.log(data);
+
 
   const workbook = new ExcelJS.Workbook();
   const sheet= workbook.addWorksheet('PagosEfectuados');
@@ -329,11 +329,10 @@ export const getPayedInvoices= async( req:Request, resp:Response)=>{
   sheet.columns = [
     { header: "Serie_Correl", key: "serie", width: 15  },
     { header: "Fec_Emi", key: "emision", width: 15  },
-    { header: "Fec_Vcto", key: "fecvec", width: 12  },
-    { header: "Moneda", key: "moneda", width: 15  },
-    { header: "Total_Documento", key: "documento", width: 15  },
-    { header: "Monto_Pagada", key: "Monto", width: 18  },
-    { header: "Saldo_Pendiente", key: "Saldo", width: 15  }
+    { header: "Fec_Vcto", key: "fecvec", width: 15  },
+    { header: "Moneda", key: "moneda", width: 10  },
+    { header: "Total_Documento", key: "documento", width: 18  },
+    { header: "Monto_Pagado", key: "Monto", width: 18  }
   ];
 
 
@@ -341,9 +340,6 @@ export const getPayedInvoices= async( req:Request, resp:Response)=>{
 sheet.getColumn(2).alignment={vertical:'middle',horizontal:'center'}
 sheet.getColumn(3).alignment={vertical:'middle',horizontal:'center'}
 sheet.getColumn(4).alignment={vertical:'middle',horizontal:'center'}
-sheet.getColumn(5).alignment={vertical:'middle',horizontal:'center'}
-sheet.getColumn(6).alignment={vertical:'middle',horizontal:'center'}
-sheet.getColumn(7).alignment={vertical:'middle',horizontal:'center'}
 
 
 
@@ -353,27 +349,19 @@ data.rows.forEach( (item:any)=>{
     emision:item.Fec_Emision,
     fecvec:item.Fec_VCTO,
     moneda:item.Moneda,
-    documento:item.Total_Documento, 
-    Monto:item.Monto_pagado,
-    Saldo:item.Saldo_pendiente
+    documento:Number(item.Total_Documento), 
+    Monto:Number(item.Monto_pagado)
    })
 
    row.getCell("emision").value = moment().format("MM/DD/YYYY");
    row.getCell("fecvec").value = moment().format("MM/DD/YYYY");
 
-   
-  // const sunat= row.getCell('sunat').alignment={vertical:'middle',horizontal:'center'}
-  // const emision= row.getCell('emision').alignment={vertical:'middle',horizontal:'center'}
-  // const fec_pago= row.getCell('fec_pago').alignment={vertical:'middle',horizontal:'center'}
-  // const moneda= row.getCell('moneda').alignment={vertical:'middle',horizontal:'center'}
 
-
-
-  const totalfac= row.getCell("totalfac");
-  totalfac.numFmt = "$ #,##0.000";
-
-  const Retenido= row.getCell("Retenido");
-  Retenido.numFmt = "$ #,##0.000";
+   const documento= row.getCell("documento");
+   documento.numFmt = "$ #,##0.000";
+ 
+   const Monto= row.getCell("Monto");
+   Monto.numFmt = "$ #,##0.000";
 
  })
 
@@ -404,6 +392,70 @@ resp.end();
 
 
 // cuentas de banco
+// http://localhost:3000/api/supliers/bank-account/P20600987381
 export const getBankAccount= async( req:Request, resp:Response)=>{
+
+  const cardCode = req.params.cardCode;
+  const apiUrl='http://52.207.189.125:3000';
+  const response = await fetch(`${apiUrl}/bank-account?cardCode=${cardCode}`);
+  const data= await response.json();
+
+  const workbook = new ExcelJS.Workbook();
+  const sheet= workbook.addWorksheet('estadoCuenta');
+
+  
+  
+  sheet.columns = [
+    { header: "Codigo_Banco", key: "Codigo_Banco", width: 15  , fill:{type:'pattern', pattern:'solid', fgColor:{
+      argb:'2121A1'
+    }}},
+    { header: "Pais", key: "Pais", width: 8  },
+    { header: "Cuenta", key: "Cuenta", width: 24  },
+    { header: "Tipo_Cuenta", key: "Tipo_Cuenta", width: 15  },
+    { header: "Moneda_SAP", key: "Moneda_SAP", width: 18  },
+    { header: "Moneda_Banco", key: "Moneda_Banco", width: 18  }
+  ];
+
+  sheet.getColumn(1).alignment={vertical:'middle',horizontal:'center'}
+  // sheet.getColumn(1).fill={  type: 'pattern',
+  //   pattern:'solid',
+  //   fgColor:{argb:'2121A1'}}
+  sheet.getColumn(2).alignment={vertical:'middle',horizontal:'center'}
+  sheet.getColumn(3).alignment={vertical:'middle',horizontal:'center'}
+  sheet.getColumn(4).alignment={vertical:'middle',horizontal:'center'}
+  sheet.getColumn(5).alignment={vertical:'middle',horizontal:'center'}
+  sheet.getColumn(6).alignment={vertical:'middle',horizontal:'center'}
+
+
+  data.rows.forEach( (item:any)=>{
+    const row = sheet.addRow({
+      Codigo_Banco:item.Codigo_Banco,
+      Pais:item.Pais,
+      Cuenta:item.Cuenta,
+      Tipo_Cuenta:item.Tipo_Cuenta,
+      Moneda_SAP:item.Moneda_SAP, 
+      Moneda_Banco:item.Moneda_Banco
+     })
+     
+    //  row.getCell('Codigo_Banco').fill={
+    //   type: 'pattern',
+    //   pattern:'solid',
+    //   fgColor:{argb:'FFFF0000'}
+    //  }
+   })
+  
+
+   resp.setHeader(
+    "Content-Type",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  );
+  resp.setHeader(
+    "Content-Disposition",
+    "attachment; filename=" + "report.xlsx"
+  );
+  
+  await workbook.xlsx.write(resp);
+  resp.end();
+
 
 }
