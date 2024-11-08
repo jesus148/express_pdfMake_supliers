@@ -105,6 +105,28 @@ data.rows.forEach( (item:any)=>{
 
 
 
+// worksheet.getRow(1).eachCell((cell) => {
+//   cell.border = {
+//       top: { style: 'thin' },
+//       left: { style: 'thin' },
+//       bottom: { style: 'thin' },
+//       right: { style: 'thin' }
+//   };
+//   cell.fill = {
+//       type: 'gradient',
+//       gradient: 'angle',
+//       degree: 90,
+//       stops: [
+//           { position: 0, color: { argb: 'ff008598' } },
+//           { position: 1, color: { argb: 'ff002343' } }
+//       ]
+//   }
+//   cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true }; 
+//   cell.font = { bold: true, color: { argb: 'FFFFFFFF' } }; 
+//         });
+
+
+
 
 resp.setHeader(
   "Content-Type",
